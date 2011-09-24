@@ -4,7 +4,7 @@
 package net.rotten194;
 
 /**
- * @author Jon
+ *  @author Jonathon "Rotten194" Vogel (jonathon.vogel[at]gmail[dot]com)
  *
  */
 public class Constants {

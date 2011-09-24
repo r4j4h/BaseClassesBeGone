@@ -29,29 +29,27 @@ on putting BCBG under a standard open-source license, but I'm not good with lawy
 1. I have no reponsibility for you fucking up with this mod. I'll try to help you out, but if you threaten me or insult me I'm out. I'm not
 obligated to do anything but flip you off.
 2. Don't rehost. It's staying on Github/MCModCenter. Feel free to link there, but no rehost.
-3. I'd really prefer if you didn't go around my adfly links. I spent a lot of time on this mod, unraveled ASM because the documentation
-on what happens when you sit on a method call and release it later didn't exist (it gets passed to a Method/FieldWriter), then the classes I
-needed weren't public, then shit and shit. Hundreds of hours, guys. Can you wait 5 seconds for my lovingly precompiled and baked to perfection
-binaries?
+3. I'd really prefer if you didn't go around my adfly links. I'll only adfly the precompiled binaries, so you're free to download from github
+and compile yourself, but if you don't want to compile it please wait the 5 seconds. Thanks.
 
 
 (user anchor)
 USER
-Welcome! Most likely you're here because another mod mentioned a BCBG dependency. You're probably a bit confused, and I don't blame you, 
+Welcome! Most likely you're here because another mod mentioned a BCBG dependency. You're probably a bit confused, and I don't blame you,
 BCBG is a very unique mod. Unlike most mods, BCBG modifies the [b]LAUNCHER[/b] to hook into Minecraft before it even starts. By patching
 the game while it is loading, BCBG provides very fast patching time, a powerful mod manager, an easy to use API, and as many possibilities
 as modifying base classes directly - [i]without the conflicts[/i].
 
 Now, you're probably thinking - 'What?! This modifies the LAUNCHER?! WArGleFlarge password blargtur security!!' - relax. BCBG is all [i]open
-source[/i], and able to be vetted by every mod developer who chooses to use it. Additionally, it only modifies one class file in the 
+source[/i], and able to be vetted by every mod developer who chooses to use it. Additionally, it only modifies one class file in the
 launcher, in a method that your account information never goes through. If you're still worried about security, you're welcome to checkout
-GameUpdater.class from the GitHub repository and compile it yourself to ensure I'm not building anything nasty into the pre-compiled 
+GameUpdater.class from the GitHub repository and compile it yourself to ensure I'm not building anything nasty into the pre-compiled
 binaries. I assure you that BCBG is perfectly safe - I have my own account ;).
 
 "Are conflicts still possible with BCBG?" -
 Short answer - yes. Long answer - yeesssssss. Serious answer - yes, but unlikely. BCBG allows you to modify classes without locking off the
 whole class, but methods still replace each other. There is a hook method as an alternative to replacing a whole method, but for some people
-it is not flexible enough. "High-traffic" methods, like EntityPlayer.tick(), might still see some conflicts. Hopefully solutions will be 
+it is not flexible enough. "High-traffic" methods, like EntityPlayer.tick(), might still see some conflicts. Hopefully solutions will be
 built into BCBG soon, however. In conflicts like this you will get a pop-up that explains the error in non-programmer speak, so you can give
 it to the developers to figure out and fix, as opposed to the normal unidentifiable blackscreens and crashes that take hours to work around.
 
@@ -83,7 +81,7 @@ Read the big red text above the download link.
 "I opened the launcher and there was just a bunch of .text junk, no classes!"
 You opened the .exe launcher. Read the text above the download link.
 
-"No \patches folder was created!"
+"No /patches folder was created!"
 You installed it wrong.
 
 "I found a bug!"
@@ -108,7 +106,7 @@ Step 2: Remove its patch classes from \patches (they should be in their own subf
 Enjoy your new modding experience, free from the trials of base file modifications and now with the ease of swapping patch classes!
 
 
-DEVELOPERS (developer anchor)
+DEVELOPERS (developer anchor) --SOME OUTDATED INFORMATION - DO NOT READ --
 
 Welcome! You probably saw this, and maybe even read through the USER section already. That's great. Hopefully you're excited by the idea of 
 BCBG, however if you're not you'll probably be by the end.
@@ -131,15 +129,7 @@ However, _Stub classes have some drawbacks: they're static, and methods changed 
 with that method. Enter the Patch class. It's dynamic Java with a rich API to manipulate class files quickly and easily. You can do anthing
 from patch based on the system time to insert hand-written or transplanted bytecode.
 
-@target("gs")
-@MCPtarget("EntityPlayer")
-class MyPatch extends Patch{
-	public static boolean patch(){
-		addGettersAndSetters(ALL);
-		setPrivacy(PUBLIC, ALL, NONE);
-		... and much more ...
-	}
-}
+-- OUTDATED EXAMPLE - REMOVED --
 
 When gs/EntityPlayer is loaded, all these patches will be applied in milliseconds, and to the JVM it will look the exact same as if you had 
 coded these in yourself - but anybody else can @target gs as well and have their changes make it in as well.
