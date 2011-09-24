@@ -15,7 +15,7 @@ BCBG uses the bytecode manipulatio library ASM to parse patch classes and apply 
 Why ASM? BCEL etc.
 ------------------
 
-ASM is by far the fastest and most memory-effecient bytecode library I could find, outscoring BCBL and JavaAssist on simple and complex patches. When yu're going to be patching hundreds of classes 100 ms a class makes a huge difference in time spent waiting.
+ASM is by far the fastest and most memory-effecient bytecode library I could find, outscoring BCBL and JavaAssist on simple and complex patches. When you're going to be patching hundreds of classes 100 ms a class makes a huge difference in time spent waiting.
 
 Is this endorsed by Notch/Mojang?
 ---------------------------------
