@@ -40,7 +40,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**
- * @author Jon
+ * @author Jonathon "Rotten194" Vogel (jonathon.vogel[at]gmail[dot]com)
  *
  */
 public class Gui {
@@ -189,22 +189,14 @@ public class Gui {
 		if (direction.equals("NEXT")){
 			return new ActionListener() {		
 				public void actionPerformed(ActionEvent arg0) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							card.next(cards);
-						}
-					});
+					card.next(cards);
 				}
 			};
 		}
 		else{
 			return new ActionListener() {		
 				public void actionPerformed(ActionEvent arg0) {
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							card.previous(cards);
-						}
-					});
+					card.previous(cards);
 				}
 			};
 		}
