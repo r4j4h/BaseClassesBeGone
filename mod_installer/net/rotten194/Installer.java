@@ -6,7 +6,7 @@ package net.rotten194;
 import java.io.File;
 
 /**
- * @author Jon
+ * @author Jonathon "Rotten194" Vogel (jonathon.vogel[at]gmail[dot]com)
  *
  */
 public class Installer {

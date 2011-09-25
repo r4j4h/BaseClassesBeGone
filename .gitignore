@@ -11,6 +11,7 @@ src/net/minecraft/*
 !src/net/minecraft/GameUpdater.java
 src/LZMA/
 src/META-INF/
+mcp_include/
 
 
 #Compiled Files#
