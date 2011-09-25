@@ -2,16 +2,16 @@
 
 .*
 !.gitignore
+!.project
+!.classpath
 
 #Project Specific Files#
 ########################
-installer_built/
 bin/
 src/net/minecraft/*
 !src/net/minecraft/GameUpdater.java
 src/LZMA/
 src/META-INF/
-mcp_include/
 
 
 #Compiled Files#
