@@ -71,7 +71,8 @@ public class ForkClassAdapter extends ClassAdapter {
 			}
 		}
 		for (CachingFieldAdapter field : fields){
-			if (!field.patch)
+			if (field.patch)
+				System.out.println("Adding back in " + field.name);
 				field.unCache(cv);
 		}
 		super.visitEnd();

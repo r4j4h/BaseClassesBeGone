@@ -24,6 +24,7 @@ public class McpCsvLoader {
 	static HashMap<String, Object[]> fields = new HashMap<String, Object[]>(5000); //~100 mb of memory
 	
 	public static String getClassNameFromMCP(String mcpName, String _package){
+		mcpName = unStub(mcpName);
 		Object[] o = classes.get(getClassHash(mcpName, _package, CLIENT));
 		if (o != null)
 			return (String)o[1];
@@ -31,6 +32,7 @@ public class McpCsvLoader {
 	}
 	
 	public static String getMethodNameFromMCP(String mcpName, String sig, String mcpClass){
+		mcpClass = unStub(mcpClass);
 		Object[] o = methods.get(getMethodHash(mcpName, sig, mcpClass, CLIENT));
 		if (o != null)
 			return (String)o[2];
@@ -38,6 +40,7 @@ public class McpCsvLoader {
 	}
 	
 	public static String getMethodNotchSigFromMCP(String mcpName, String sig, String mcpClass){
+		mcpClass = unStub(mcpClass);
 		Object[]o = methods.get(getMethodHash(mcpName, sig, mcpClass, CLIENT));
 		if (o != null)
 			return (String)o[4];
@@ -45,6 +48,7 @@ public class McpCsvLoader {
 	}
 	
 	public static String getFieldNameFromMCP(String mcpName, String mcpClass){
+		mcpClass = unStub(mcpClass);
 		Object[] o = fields.get(getFieldHash(mcpName, mcpClass, CLIENT));
 		if (o != null)
 			return (String)o[2];
@@ -52,30 +56,35 @@ public class McpCsvLoader {
 	}
 	
 	public static String getFieldName(String mcpName, String mcpClass){
+		mcpClass = unStub(mcpClass);
 		String s = getFieldNameFromMCP(mcpName, mcpClass);
 		if (s == null) s = mcpName;
 		return s;
 	}
 	
 	public static String getMethodName(String mcpName, String sig, String mcpClass){
+		mcpClass = unStub(mcpClass);
 		String s = getMethodNameFromMCP(mcpName, sig, mcpClass);
 		if (s == null) s = mcpName;
 		return s;
 	}
 	
 	public static String getMethodNotchSig(String mcpName, String mcpSig, String mcpClass){
+		mcpClass = unStub(mcpClass);
 		String s = getMethodNotchSig(mcpName, mcpSig, mcpClass);
 		if (s == null) s = mcpSig;
 		return s;
 	}
 	
 	public static String getClassName(String mcpName, String _package){
+		mcpName = unStub(mcpName);
 		String s = getClassNameFromMCP(mcpName, _package);
 		if (s == null) s = mcpName;
 		return s;
 	}
 	
 	public static String getClassName(String mcpName){
+		mcpName = unStub(mcpName);
 		String s = getClassNameFromMCP(mcpName, NET_MINECRAFT_SRC);
 		if (s != null) return s;
 		s = getClassNameFromMCP(mcpName, NET_MINECRAFT_CLIENT);
@@ -83,6 +92,13 @@ public class McpCsvLoader {
 		s = getClassNameFromMCP(mcpName, NET_MINECRAFT_SERVER);
 		if (s != null) return s;
 		return mcpName;
+	}
+	
+	private static String unStub(String className){
+		if (className.endsWith("_Stub")){
+			return className.substring(0, className.length() - 5);
+		}
+		return className;
 	}
 	
 	public static void loadCsvs(File dir){
@@ -135,8 +151,9 @@ public class McpCsvLoader {
 			while((line = reader.readLine()) != null){
 				String[] temp = parseLine(line);
 				String name = temp[1];
-				String sig = temp[3];
+				String sig = temp[4];
 				String clazz = temp[5];
+				if (name.equals("func_35356_c")) System.out.println("Adding func_35356_c " + Arrays.toString(temp));
 				methods.put(getMethodHash(name, sig, clazz, Integer.parseInt(temp[8])) , temp);
 			}
 		} catch (FileNotFoundException e) {
