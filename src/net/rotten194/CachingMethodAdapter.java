@@ -24,6 +24,7 @@ public class CachingMethodAdapter implements MethodVisitor {
 	String signature;
 	String[] exceptions;
 	String className;
+	public boolean patch = true;
 
 	public CachingMethodAdapter(CallCache cache, int access, String name, String desc, String signature, String[] exceptions, String className) {
 		super();
@@ -162,6 +163,11 @@ public class CachingMethodAdapter implements MethodVisitor {
 	 */
 	@Override
 	public AnnotationVisitor visitAnnotation(String arg0, boolean arg1) {
+		System.out.println("Annotation: " + arg0);
+		if (arg0.equals("Lnet/minecraft/rotten194/Annotations$noPatch;")){
+			this.patch = false;
+			System.out.println("Skipping method " + name + desc);
+		}
 		return null;
 	}
 
@@ -195,6 +201,7 @@ public class CachingMethodAdapter implements MethodVisitor {
 	@Override
 	public void visitEnd() {
 		cache.createEvent("visitEnd", "", (Object[])null);
+		System.out.println("Finished caching method: " + access + " " + className + " " + desc + " " + name + " " + signature + " " + patch);
 	}
 
 	/* (non-Javadoc)

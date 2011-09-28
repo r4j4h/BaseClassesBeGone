@@ -190,7 +190,7 @@ public class PatchingClassLoader extends URLClassLoader {
 	
 	@Override
 	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		System.out.println("load " + name);
+		//System.out.println("load " + name);
 		try{
 			if (stubs == null){
 				stubs = getAllStubClasses();
@@ -210,7 +210,7 @@ public class PatchingClassLoader extends URLClassLoader {
 			for (int i = 0; i < stubs.length; i++){
 				String s = stubClassTargets[i];
 				String s2 = stubClasses[i];
-				System.out.println(s + ", " + s2);
+				//System.out.println(s + ", " + s2);
 				String classString = McpCsvLoader.getClassName(s);
 				if (classString.equals(name)){
 					System.out.printf("mcp matched: %s to %s", s, classString);

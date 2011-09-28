@@ -18,7 +18,7 @@ public class CachingFieldAdapter implements FieldVisitor {
 	String signature;
 	Object value;
 	String className;
-	boolean noPatch = false;
+	boolean patch = true;
 	
 	public CachingFieldAdapter(CallCache cache, int access, String name, String desc, String signature, Object value, String className) {
 		super();
@@ -58,6 +58,11 @@ public class CachingFieldAdapter implements FieldVisitor {
 	 */
 	@Override
 	public AnnotationVisitor visitAnnotation(String arg0, boolean arg1) {
+		System.out.println("Annotation: " + arg0);
+		if (arg0.equals("Lnet/minecraft/rotten194/Annotations$noPatch;")){
+			this.patch = false;
+			System.out.println("Skipping field " + name);
+		}
 		return null;
 	}
 

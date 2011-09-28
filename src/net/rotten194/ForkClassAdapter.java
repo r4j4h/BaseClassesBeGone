@@ -33,7 +33,7 @@ public class ForkClassAdapter extends ClassAdapter {
 	public FieldVisitor visitField(int arg0, String arg1, String arg2, String arg3, Object arg4) {
 		ArrayList<CachingFieldAdapter> fields = override.getFields();
 		for (CachingFieldAdapter field : fields){
-			if (field.matches(arg1)){
+			if (field.matches(arg1) && field.patch){
 				return null;
 			}
 		}
@@ -47,10 +47,13 @@ public class ForkClassAdapter extends ClassAdapter {
 	public MethodVisitor visitMethod(int arg0, String arg1, String arg2, String arg3, String[] arg4) {
 		ArrayList<CachingMethodAdapter> methods = override.getMethods();
 		for (CachingMethodAdapter method : methods){
-			if (method.matches(arg1, arg2, arg3)){
+			System.out.println(method.name + method.desc + "->" + arg1 + arg2 + " " + method.patch);
+			if (method.matches(arg1, arg2, arg3) && method.patch){
+				System.out.println("Overriding " + method.name + method.desc + method.patch);
 				return null;
 			}
 		}
+		System.out.println("Creating " + arg1 + arg2);
 		return super.visitMethod(arg0, arg1, arg2, arg3, arg4);
 	}
 	
@@ -62,10 +65,14 @@ public class ForkClassAdapter extends ClassAdapter {
 		ArrayList<CachingMethodAdapter> methods = override.getMethods();
 		ArrayList<CachingFieldAdapter> fields = override.getFields();
 		for (CachingMethodAdapter method : methods){
-			method.unCache(cv, patchName, sourceName);
+			if (method.patch){
+				System.out.println("Adding back in " + method.name + method.desc);
+				method.unCache(cv, patchName, sourceName);
+			}
 		}
 		for (CachingFieldAdapter field : fields){
-			field.unCache(cv);
+			if (!field.patch)
+				field.unCache(cv);
 		}
 		super.visitEnd();
 	}
