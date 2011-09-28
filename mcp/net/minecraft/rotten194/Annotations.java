@@ -1,4 +1,4 @@
-package net.rotten194;
+package net.minecraft.rotten194;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
