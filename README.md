@@ -36,7 +36,7 @@ Fix all the otehr errors. The entire launcher doesn't need to work, just enough 
 Now create a directory and clone this repository into it.
 Put all the decompiled and fixed files from the launcher into place (DO NOT OVERWRITE GameUpdater.java)
 Set up git (refer to github documentation and my rules)  
-	git clone git@github.com:Rotten194/BaseClassesBeGone.git  
+	git clone git://github.com/Rotten194/BaseClassesBeGone.git
 		makes local copy of bcbg  
 	cd BaseClassesBeGone  
 	-- add launcher files (won't be tracked by git because they're in .gitignore, WHICH YOU'RE USING RIGHT?!)  
