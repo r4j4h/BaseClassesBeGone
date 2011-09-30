@@ -1,0 +1,88 @@
+Transitioning a base class to BCBG - a more complete guide
+
+I covered this quickly in the MCF thread but it deserves a more comprehensive detail.
+The gist is "remove everything you don't want", but it's not quite that simple.
+
+Basically, you have your base class. Every method and field not marked with a @noPatch annotations will either be added to the base class or replace something in the base class. You can't remove anything (there's no reason to...). 
+
+I'll start with the assumption that you already have a base class that you have modifications to, and you want to change it to a stub class so BCBG will handle patching it's methods and fields into the base class. Let's imagine this hypothetical mod changes a base class who's MCP name is 'Foo' and Notch name is 'a'. 
+
+original
+public class Foo {
+    public void bar(){
+        return do_something(567);
+    }
+    
+    public void zoot(){
+        return i * i / 9 % bar();
+    }
+}
+
+your version
+public class Foo {
+    private int MY_FIELD = 69; //new!!
+    
+    public void bar(){ //same as before
+        return do_something(567);
+    }
+    
+    public void zoot(){ //different!
+        return i * i / 9 % bar() + MY_FIELD;
+    }
+}
+
+You want to leave `bar` alone and not need to include it. However, to have it not patched you can't just remove it, since you need a method called `bar` for `zoot` (which you DO want to change) to compile. Enter the @noPatch annotation.
+
+Need To Know: @noPatch
+Type: Annotation
+Class: net.minecraft.rotten194.Annotations.noPatch
+How To Use: Copy the 'mcp' folder into your mcp folder, and add 'import static net.minecraft.rotten194.Annotations.noPatch' to your code.
+
+@noPatch tells BCBG that even though this method is here, ignore it and do NOT use it to replace the base method.
+
+your new version
+public class Foo {
+    private int MY_FIELD = 69; //new!!
+    
+    @noPatch
+    public Foo(){} //this needs to be here so javac won't generate a default constructor and then have BCBG override the base one
+    
+    @noPatch
+    public void bar(){ //now just a stub method with no body, will not be patched
+    }
+    
+    public void zoot(){ //still different!
+        return i * i / 9 % bar() + MY_FIELD;
+    }
+}
+
+This still won't work though - it needs to be named specially so BCBG knows it's a Stub class.
+
+your new new version
+public class Foo_Stub { //simply append stub to the MCP name
+    private int MY_FIELD = 69; //new!!
+    
+    @noPatch
+    public Foo_Stub(){} //this needs to be here so javac won't generate a default constructor and then have BCBG override the base one
+    //constructor name needs to be changed too
+    
+    @noPatch
+    public void bar(){ //now just a stub method with no body, will not be patched
+    }
+    
+    public void zoot(){ //still different!
+        return i * i / 9 % bar() + MY_FIELD;
+    }
+}
+
+Now compile, and copy to /patches/MyMod/Foo_Stub.class and load up BCBG. It should get it fine! If you create a fake Notch class and call it Foo, the stick it in the .jar BCBG will patch it with your Stub class!
+
+Now, the more advanced things.
+Say you have a static field that does calculations in it's init (eg public static int i = new Random().nextInt(0, 10);). That gets written to an invisible method called <clinit>. BE CAREFUL. BCBG will happily overwrite tis method and stop other patches from doing the same thing or using static {} blocks. The next version of BCBG will instead chain these together, but for now just try and do that in custom init methods instead, that you call manually.
+
+Try and namespace any methods you add so they don't conflict with people adding methods of the same name. Instead of getPlayer try <yourname>GetPlayer or something.
+
+DO AS MUCH AS POSSIBLE OUTSIDE OF BASE CLASSES.
+
+You can add other classes by simply putting them in your mod's folder. Same with images. You can also override .jar resources (e.g. title/mclogo.png) by putting them in THE SAME FILE STRUCTURE. Your mod's folder == minecraft.jar. For replacing resources to work they have to be the path relative to that "root". For instance, to replace mclogo.png create a folder called title in your mod's folder, then put a .png called mclogo.png inside that.
+e.g. If you need a new class called Zoo for a new method in a base class, just create that class and moe it in with the _Stub class. BCBG will load it fine.
