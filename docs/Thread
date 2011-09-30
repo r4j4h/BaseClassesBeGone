@@ -1,76 +1,39 @@
 BaseClassesBGone Version 0.1 - Do away with base file modifications
 A custom launcher and library to replace base file modifications with runtime patches
-
-Hello! I'm Rotten194, here to show you BaseClassesBGone, the new 1-size-fits-all launcher, tool and API collection to remove the need for 
-pesky base class modifications. Tired of You are The Creeper and Zombe's Mod Pack both using gs? Tired your api's out-api the other api antics
- making them conflict?
- Then get the creators to use BaseClassesBGone, for the low low price of free!
+Hello! I'm Rotten194, here to show you BaseClassesBGone, the new 1-size-fits-all launcher, tool and API collection to remove the need for pesky base class modifications. Tired of You are The Creeper and Zombe's Mod Pack both using gs? Tired your api's out-api the other api antics making them conflict? Then get the creators to use BaseClassesBGone, for the low low price of free!
 
 But seriously, this is pretty fuckin' sweet.
 
-
 LICENSE (license goto)
-
-I am a USER and need to install BaseClassesBGone (user goto)
-
-I am a DEVELOPER and want to port my mods to BaseClassesBGone (dev goto)
-
-I am interested in PROMOTING BaseClassesBGone between mod developers (promotion goto)
-
-I am interested in CONTRIBUTING to BaseClassesBGone (contrib goto)
-
-I am NOTCH and am interested in this mod (how very likely...) (Notch goto)
+I am a USER and need to install BaseClassesBGone 
+I am a DEVELOPER and want to port my mods to BaseClassesBGone 
+I am interested in PROMOTING BaseClassesBGone between mod developers 
+I am interested in CONTRIBUTING to BaseClassesBGone 
+I am NOTCH and am interested in this mod (how very likely...) 
 
 
-(license anchor)
 LICENSE
-Now, I hate psudeolaw crap as much as anyone. I still feel pretty bad for creating those two licenses in the stickied thread :(. I'm planning
-on putting BCBG under a standard open-source license, but I'm not good with lawyar so I don't know what to pick. Until then...
-1. I have no reponsibility for you fucking up with this mod. I'll try to help you out, but if you threaten me or insult me I'm out. I'm not
-obligated to do anything but flip you off.
-2. Don't rehost. It's staying on Github/MCModCenter. Feel free to link there, but no rehost.
-3. I'd really prefer if you didn't go around my adfly links. I'll only adfly the precompiled binaries, so you're free to download from github
-and compile yourself, but if you don't want to compile it please wait the 5 seconds. Thanks.
+Now, I hate psudeo-law crap as much as anyone. I still feel pretty bad for creating those two licenses in the stickied thread :(. I'm planning on putting BCBG under a standard open-source license, but I'm not good with that sort of thing so I don't know what to pick. Until then...
+1. I have no responsibility for you screwing up with this mod. I'll try to help you out, but if you threaten me or insult me I'm out. I'm not obligated to do anything but flip you off.
+2. Don't re-host. It's staying on Github/MCModCenter. Feel free to link there, but don't re-host.
+3. I'd really prefer if you didn't go around my adfly links. I'll only adfly the pre-compiled binaries, so you're free to download from github and compile yourself, but if you don't want to compile it please wait the 5 seconds. Thanks.
 
 
-(user anchor)
 USER
-Welcome! Most likely you're here because another mod mentioned a BCBG dependency. You're probably a bit confused, and I don't blame you,
-BCBG is a very unique mod. Unlike most mods, BCBG modifies the [b]LAUNCHER[/b] to hook into Minecraft before it even starts. By patching
-the game while it is loading, BCBG provides very fast patching time, a powerful mod manager, an easy to use API, and as many possibilities
-as modifying base classes directly - [i]without the conflicts[/i].
+Welcome! Most likely you're here because another mod mentioned a BCBG dependency. You're probably a bit confused, and I don't blame you,BCBG is a very unique mod. Unlike most mods, BCBG modifies the [b]LAUNCHER[/b] to hook into Minecraft before it even starts. By patching the game while it is loading, BCBG provides very fast patching time, a powerful mod manager, an easy to use API, and as many possibilities as modifying base classes directly - [i]without the conflicts[/i]. Now, you're probably thinking - 'What?! This modifies the LAUNCHER?! WArGleFlarge password blargtur security!!' - relax. BCBG is all [i]open-source[/i], and able to be verified by every mod developer who chooses to use it. Additionally, it only modifies one class file in the launcher, in a method that your account information never goes through. If you're still worried about security, you're welcome to checkout GameUpdater.class from the GitHub repository and compile it yourself to ensure I'm not building anything nasty into the pre-compiled binaries. I assure you that BCBG is perfectly safe - I have my own account ;).
 
-Now, you're probably thinking - 'What?! This modifies the LAUNCHER?! WArGleFlarge password blargtur security!!' - relax. BCBG is all [i]open
-source[/i], and able to be vetted by every mod developer who chooses to use it. Additionally, it only modifies one class file in the
-launcher, in a method that your account information never goes through. If you're still worried about security, you're welcome to checkout
-GameUpdater.class from the GitHub repository and compile it yourself to ensure I'm not building anything nasty into the pre-compiled
-binaries. I assure you that BCBG is perfectly safe - I have my own account ;).
-
-"Are conflicts still possible with BCBG?" -
-Short answer - yes. Long answer - yeesssssss. Serious answer - yes, but unlikely. BCBG allows you to modify classes without locking off the
-whole class, but methods still replace each other. There is a hook method as an alternative to replacing a whole method, but for some people
-it is not flexible enough. "High-traffic" methods, like EntityPlayer.tick(), might still see some conflicts. Hopefully solutions will be
-built into BCBG soon, however. In conflicts like this you will get a pop-up that explains the error in non-programmer speak, so you can give
-it to the developers to figure out and fix, as opposed to the normal unidentifiable blackscreens and crashes that take hours to work around.
-
+"Are conflicts still possible with BCBG?"-
+Short answer - yes. 
+Long answer - yes, but unlikely. BCBG allows you to modify classes without locking off the whole class, but methods still replace each other. There is a hook method as an alternative to replacing a whole method, but for some people it is not flexible enough. "High-traffic" methods, like EntityPlayer.tick(), might still see some conflicts. Hopefully solutions will be built into BCBG soon, however. In conflicts like this you will get a pop-up that explains the error in non-programmer speak, so you can give it to the developers to figure out and fix, as opposed to the normal unidentifiable black screens and crashes that take hours to work around.
 "How do I install BCBG?" -
 Look below for a detailed installation guide.
 
-
 Installation guide:
-Download this [linux launcher link]. This is the official Notch launcher in .jar form (don't worry that it says linux -it will work on Windows and Mac too).
-Move that [b]launcher[/b] to your desktop or wherever else you normally put your launcher.
-Open the [b]launcher[/b] with 7zip or WinRAR or whatever you use. Drag my classes in.
-Start the [b]launcher[/b]. If everything is working fine, a patches folder should appear in your .minecraft directory.
-Close the [b]launcher[/b] and install your patches to \patches
-Play!
-Now, if you were reading at all you'll notice only the LAUNCHER was mentioned. MINECRAFT.JAR IS NOT USED AT ALL IN THIS INSTALLATION.
+Download this [Linux launcher link]. This is the official Notch launcher in .jar form (don't worry that it says Linux -it will work on Windows and Mac too). Move that [b]launcher[/b] to your desktop or wherever else you normally put your launcher. Open the [b]launcher[/b] with 7zip or WinRAR or whatever you use. Drag my classes in. Start the [b]launcher[/b]. If everything is working fine, a patches folder should appear in your .minecraft directory. Close the [b]launcher[/b] and install your patches to \patches. Play!
+Now, if you were reading at all you'll notice only the LAUNCHER was mentioned. MINECRAFT.JAR IS NOT USED AT ALL IN THIS INSTALLATION. 
 
 Download:
-INSTALL THIS TO THE .JAR LAUNCHER, NOT MINECRAFT.JAR. EVERY TIME YOU INSTALL TO MINECRAFT.JAR, GOD KILLS A KITTEN. IF YOU INSTALL TO 
-MINECRAFT.JAR, A DEAD GIRL WILL APPEAR IN YOUR ROOM AT MIDNIGHT. MINECRAFT.JAR CRIES TEARS OF PAIN EVERY TIME YOU INSTALL BCBG TO IT. READ THE
-INSTALLATION INSTRUCTIONS OR THEY WILL KILL YOUR FAMILY. IF YOU INSTALL THIS TO THE .EXE LAUNCHER, IT WILL PUNCH OUT OF YOUR COMPUTER SCREEN
-AND PROLAPSE YOUR ANUS. DO YOU WANT A PROLAPSED ANUS? NO? THEN INSTALL THIS RIGHT.
+INSTALL THIS TO THE .JAR LAUNCHER, NOT MINECRAFT.JAR. EVERY TIME YOU INSTALL TO MINECRAFT.JAR, GOD KILLS A KITTEN. IF YOU INSTALL TO MINECRAFT.JAR, A DEAD GIRL WILL APPEAR IN YOUR ROOM AT MIDNIGHT. MINECRAFT.JAR CRIES TEARS OF PAIN EVERY TIME YOU INSTALL BCBG TO IT. READ THE INSTALLATION INSTRUCTIONS OR THEY WILL KILL YOUR FAMILY. IF YOU INSTALL THIS TO THE .EXE LAUNCHER, IT WILL PUNCH OUT OF YOUR COMPUTER SCREEN AND PROLAPSE YOUR ANUS. DO YOU WANT A PROLAPSED ANUS? NO? THEN INSTALL THIS RIGHT.
 [download link]
 But seriously, for the love of the flying spaghetti monster read the install instructions. I don't care if you have 'downloaded mods before', THIS IS DIFFERENT. READ IT PLEASE.
 
@@ -90,127 +53,131 @@ PM it to me. DO NOT POST IT HERE, I WILL NEVER READ IT.
 "Can I use an alternative launcher (e.g. a batch file or the MCP mod system)?"
 Good question (finally). The short answer is no to certain launchers. If the launcher directly launches minecraft.jar, then no. If it launches the normal launcher, then yes. I've been working with the MCP team, so everything should work between BCBG and the MCPMS, but other launchers are hit or miss.
 
-How to Install a BCBG mod:
-This is hardly a definitive guide for all mods, however this is the [i]usual[/i] way to do it. Always consult the mod thread first, in case of 
-any special instructions or dependencies. 
-Step 1: Unpack the archive. Generally this will have two folders, one named something like "ML" or ".jar" and one named "patches"
-Step 2: Put all ML classes into .minecraft\mods
-Step 3: Put any files marked ".jar" or similar into minecraft.jar with your archive tool
-Step 4: Drag the "patch" or similar folder into .minecraft\patches
-Step 5: Pray and launch
-
 How to disable a BCBG mod:
-Step 1: Remove all its files from \mods and minecraft.jar
-Step 2: Remove its patch classes from \patches (they should be in their own subfolder)
+Remove all it's file from it's sub-directory in /patches. You may need to also remove any files you installed to other places in .minecraft, depending on the mod.
 
 Enjoy your new modding experience, free from the trials of base file modifications and now with the ease of swapping patch classes!
 
+DEVELOPERS 
+Welcome! You probably saw this, and maybe even read through the USER section already. That's great. Hopefully you're excited by the idea of BCBG, however if you're not you'll probably be by the end.
+Features of BCBG (as of the current version):   
+* Replace methods with methods from other classes (transplant methods)  
+* Load resources from a folder instead of requiring them in minecraft.jar
+* Create automatic 'JCN' (Just Click Next) installers for your mods
+* (Limited) built-in reobfuscation/deobfuscation support (will be expanded in future versions)
 
-DEVELOPERS (developer anchor) --SOME OUTDATED INFORMATION - DO NOT READ --
+The best thing about BCBG is how it simplifies mod installation, and helps prevent conflicts. Plain and simple.
 
-Welcome! You probably saw this, and maybe even read through the USER section already. That's great. Hopefully you're excited by the idea of 
-BCBG, however if you're not you'll probably be by the end.
+What's planned for future versions:
+* Manual patching api that can run before & after the MCP and Stub processes
+* Drop-in module support for modding mods
+* Load mods from bcbg:// URLs
+* Server support
+* Generate classes on the fly
+* And more!
 
-Features of BCBG:
-	* Replace methods with methods from other classes (transplant methods)
-	* Add new methods
-	* Add new fields
-	* Add getters and setters
-	* Modify annotations
-	* Change public/protected/private declarations
-	* And more!
-All while allowing other people to change the class - and ALL with a rich Java API.
+How does it work?
+I don't believe in the Java philosophy that the implementation doesn't matter if the interface is visible, which is why BCBG is entirely open-source. You're free to check out the repository on GitHub (https://github.com/Rotten194/BaseClassesBeGone), clone it, poke around, and try to break it. But the gist of how it works, internally:
+BCBG maintains two folders, /patches and /.bcbg_conf. .bcbf_conf just holds some MCP files, but /patches is where the action is. On startup, BCBG walks the directory tree and keeps a running list of patches registered. On a class request, BCBG first checks to see if that class is contained in /patches or needs to be patched in /patches. If so, it fires up the bytecode library ASM and starts parsing through the class structure and replacing bytecode instructions.
+It hooks in through the ClassLoader used in the launcher. The URL classloader is replaced by a custom PatchingClassLoader.
 
-I can't go over the whole API in just this forum post, but here's some simple features:
+How do I write stub classes?
+I'll start with the assumption that you already have a base class that you have modifications to, and you want to change it to a stub class so BCBG will handle patching it's methods and fields into the base class. Let's imagine this hypothetical mod changes a base class who's MCP name is 'Foo' and Notch name is 'a'. 
 
-_Stub classes - Stub classes are the hammer in your toolbox. They make it incredibly easy to transfer a base class to a BCBG class. All you need to do is copy the class, change the name to <classname>_Stub, and remove all the methods and fields you're not changing. Then modify the methods you re changing, add more methods and fields, and everything will get automagically loaded by teh BCBG classloader. No fuss.
+original
+public class Foo {
+    public void bar(){
+        return do_something(567);
+    }
+    
+    public void zoot(){
+        return i * i / 9 % bar();
+    }
+}
 
-However, _Stub classes have some drawbacks: they're static, and methods changed within them will conflict with other _Stub classes messing 
-with that method. Enter the Patch class. It's dynamic Java with a rich API to manipulate class files quickly and easily. You can do anthing
-from patch based on the system time to insert hand-written or transplanted bytecode.
+your version
+public class Foo {
+    private int MY_FIELD = 69; //new!!
+    
+    public void bar(){ //same as before
+        return do_something(567);
+    }
+    
+    public void zoot(){ //different!
+        return i * i / 9 % bar() + MY_FIELD;
+    }
+}
 
--- OUTDATED EXAMPLE - REMOVED --
+You want to leave `bar` alone and not need to include it. However, to have it not patched you can't just remove it, since you need a method called `bar` for `zoot` (which you DO want to change) to compile. Enter the @noPatch annotation.
 
-When gs/EntityPlayer is loaded, all these patches will be applied in milliseconds, and to the JVM it will look the exact same as if you had 
-coded these in yourself - but anybody else can @target gs as well and have their changes make it in as well.
+Need To Know: @noPatch
+Type: Annotation
+Class: net.minecraft.rotten194.Annotations.noPatch
+How To Use: Copy the 'mcp' folder into your mcp folder, and add 'import static net.minecraft.rotten194.Annotations.noPatch' to your code.
 
-"What if two patches conflict?"
-If it's a property change, the less restrictive one will win out (eg setPrivacy(PUBLIC would overrule setPrivacy(PROTECTED  ). If the launcher 
-cannot work out the differences (eg two mods replacing the same method, or two mods adding a field of the same name), it will popup an error 
-to the user to forward to the developers to fix.
+@noPatch tells BCBG that even though this method is here, ignore it and do NOT use it to replace the base method.
 
-"Is it hard to port my modified-Notch classes to BCBG?"
-No, not at all! A guide on this will be up soon.
+your new version
+public class Foo {
+    private int MY_FIELD = 69; //new!!
+    
+    @noPatch
+    public Foo(){} //this needs to be here so javac won't generate a default constructor and then have BCBG override the base one
+    
+    @noPatch
+    public void bar(){ //now just a stub method with no body, will not be patched
+    }
+    
+    public void zoot(){ //still different!
+        return i * i / 9 % bar() + MY_FIELD;
+    }
+}
 
-"Can I use MCP with BCBG?"
-Yes! A guide will be up soon.
+This still won't work though - it needs to be named specially so BCBG knows it's a Stub class.
 
-"How does this work? (It's amazing! - optional ;) )" - 
-If you want a layman-y version, check the USER section. the technical answer is it hooks much higher up in the chain of command than most mods 
-(IE, modloader). When the launcher downloads all the classes, it loads them with a ClassLoader - which has some handy methods like findClass, 
-loadClass and defineClass. When a class is loaded, all classes it references need to be loaded as well, and they get loaded through the 
-classloader that loaded it (super technically, through a classloader that delegates to the ClassLoader that loaded it, forming a ClassLoader 
-tree that delegates up until it finds a ClassLoader with special properties, like mine, or the System bootstrap ClassLoader). If you have that 
-classloader scan for certain names, you can return slightly modified classes through findClass then expected. This is incredibly flexible 
-because you're literally changing the source code - if you wanted to, you could deliver Clojure, Scala, Ruby, etc. classes instead of Java and 
-they would work [i]perfectly[/i] fine (they might need a bit of tweaking, but not much).
-To manipulate the bytecode, I use a library called ASM, because it's fast and tiny. All calls to API methods generate [i]events[/i], which I 
-process while passing the bytecode through ASM's API chain. This has a side-effect of separating the Patch classes from everything else, which 
-is good.
+your new new version
+public class Foo_Stub { //simply append stub to the MCP name
+    private int MY_FIELD = 69; //new!!
+    
+    @noPatch
+    public Foo_Stub(){} //this needs to be here so javac won't generate a default constructor and then have BCBG override the base one
+    //constructor name needs to be changed too
+    
+    @noPatch
+    public void bar(){ //now just a stub method with no body, will not be patched
+    }
+    
+    public void zoot(){ //still different!
+        return i * i / 9 % bar() + MY_FIELD;
+    }
+}
 
-PROMOTING (promotion anchor)
+Now compile, and copy to /patches/MyMod/Foo_Stub.class and load up BCBG. It should get it fine! If you create a fake Notch class and call it Foo, the stick it in the .jar BCBG will patch it with your Stub class!
 
-Now, unlike some APIs (Minecraft Forge >.>) I don't suggest that you go around bugging every mod developer you see without knowledge of what
-makes a mod that would be significantly helped by BCBG and what doesn't. Here's a mod that would be helped:
-    * Mods that use lots of base classes to access constants and local variables
-    * Mods that use base classes to alter behavior of mobs/items/etc
-    * Mods that use base classes to add hooks to methods
-Mods that would NOT be helped:
-    * Mods that use base classes to change very "high-traffic" methods (these would be incompatible anyways)
-    * Mods that don't use base classes (duh!)
-If you think a mod would be helped by BCBG, shoot the author a PM letting them know. Perhaps link a tutorial on transferring classes over.
-If they don't want to, that's their choice. They won't be incompatible with BCBG mods, just other mods that alter those classes. BCBG mods will
-always be compatible with base-class altering mods (except in very, very specific circumstances).
+Why are you using MCP names?
+BCBG has a built in deobfuscator. If you create a _Stub class for a real Notch class and have some @noPatch annotations in there, if you crack open the compiled & reobfuscated Stub class you'll notice calls to those methods aren't changed to obfuscated names. This is MCP being "clever" by noticing you have declared a method with that name and that it "shouldn't" change calls to that. BCBG changes those and finds the obfuscated class names automatically - on git it is src/rotten194/McpClassAdapter.java.
 
+PROMOTING 
+Now, unlike some APIs (Minecraft Forge >.>) I don't suggest that you go around bugging every mod developer you see without knowledge of what makes a mod that would be significantly helped by BCBG and what doesn't. Here's a mod that would be helped:    
+* Mods that use lots of base classes to access constants and local variables    
+* Mods that use base classes to alter behavior of mobs/items/etc    
+* Mods that use base classes to add hooks to methods
 
-CONTRIBUTE (contrib anchor)
+Mods that would NOT be helped:    
+* Mods that use base classes to change very "high-traffic" methods (these would be incompatible anyways)    
+* Mods that don't use base classes (duh!)
 
-BCBG is open source. If you'd like to contribute a patch, first contact me on IRC. Unsolicited pull requests are a bad idea, as your work may
-not get used if I don't feel it's warranted. Ask me, and if I like your idea code it up and submit a pull. I'll review it, and if it's good add
-it. Knoweldge of Java and Git are required to contribute. Prior knowledge of ASM is handy, but not needed. 
+If you think a mod would be helped by BCBG, shoot the author a PM letting them know. Perhaps link a tutorial on transferring classes over. If they don't want to, that's their choice. They won't be incompatible with BCBG mods, just other mods that alter those classes. BCBG mods will always be compatible with base-class altering mods (except in very, very specific circumstances).
 
-NOTCH (notch anchor)
+CONTRIBUTE 
+BCBG is open source. If you'd like to contribute a patch, first contact me on IRC. Unsolicited pull requests are a bad idea, as your work may not get used if I don't feel it's warranted. Ask me, and if I like your idea code it up and submit a pull. I'll review it, and if it's good add it. Knowledge of Java and Git are required to contribute. Prior knowledge of ASM is handy, but not needed. FOLLOW THE COMMIT RULES. DO NOT POLLUTE THE REPOSITORY WITH WINDOWS NEWLINES.
 
+NOTCH 
 Now I doubt you'll actually read this thread, but if this catches your eye and you do...
+I have huge respect for your work. Yes, it's messy, yeah, you have less-than-optimal coding techniques. But there's an old joke about programmers: How many programmers does it take to screw in a light bulb? 1, and 100 others to say "Not bad. But I could have done better". It's pretty lame I admit, but it makes a point: you made a hugely successful game, you've carried it through this far, and you've dedicated yourself to the modding community much more than many developers, both in support and in implementing good mods into the game instead of letting them fester. Thank you for that, despite how many modders think that the 2 generic items that their mod adds makes them better then the creator of the engine. On that note, however...
+PLEASE use a system like BCBG in the official API. I've heard rumors you are talking with the Bukkit team to make single-player modding a one-person server running locally. PLEASE DON'T. It adds useless overhead, inter-process sockets suckage, and junk to the system. It seperates modders from the engine grit. It will needlessly out-date hundreds of mods that will need to be ported to a new, vastly more limited API. It will force you to limit SP modding to prevent malicious code being executed in SMP. There is so many more downsides, for what upsides? It's a [b][i]BAD IDEA[/i][/b]. Please do not do it. I'd be more than happy to have BCBG implemented into the official game. Hell, I'd give up all my code to you guys (you might need to license ASM though). I'd work for you guys for free to implement this into your official code base. PLEASE do not go the Bukkit route. For the love of Steve. Go with a BCBG-like solution + ModLoader and other APIs on the client side, with Bukkit on the server side, and a bridge mod like Spout between them. Clients and servers are vastly different, what's the sense in treating them the same? Trying to for the sake of being able to develop both at once will only end with you developing twice as much. Thanks. 
 
-I have huge respect for your work. Yes, it's messy, yeah, you have less-than-optimal coding techniques. But there's an old joke about 
-programmers: How many programmers does it take to screw in a light bulb? 1, and 100 others to say "Not bad. But I could have done better". 
-It's pretty lame I admit, but it makes a point: you made a hugely successful game, you've carried it through this far, and you've dedicated 
-yourself to the modding community much more than many developers, both in support and in implementing good mods instead of letting them fester. 
-Thank you for that, despite how many modders think that the 2 generic items that their mod adds makes them better then the creator of the 
-engine. On that note, however...
-
-PLEASE use a system like BCBG in the official API. I've heard rumors you are talking with the Bukkit team to make single-player modding a 
-one-person server running locally. PLEASE DON'T. It adds useless overhead, inter-process sockets suckage, and junk to the system. It seperates 
-modders from the engine grit. It will needlessly out-date hundreds of mods that will need to be ported to a new, vastly more limited API. It 
-will force you to limit SP modding to prevent malicious code being executed in SMP. There is so many more downsides, for what upsides? It's a 
-[b][i]BAD IDEA[/i][/b]. Please do not do it. I'd be more than happy to have BCBG implemented into the official game. Hell, I'd give up all my 
-code to you guys (you might need to license ASM though). I'd work for you guys for free to implement this into your official code base. PLEASE 
-do not go the Bukkit route. For the love of Steve. Go with a BCBG-like solution + ModLoader and other APIs on the client side, with Bukkit on 
-the server side, and a bridge mod like Spout between them. Clients and servers are vastly different, what's the sense in treating them the 
-same? Trying to for the sake of being able to develop both at once will only end with you developing twice as much.
-
-Thanks.
+End of the thread. Nothing past this point!
 
 
-
-Welp! End of the thread. Nothing past this point!
-
-
-
-
-ACTION>   OPEN THREAD
-----      Wall of Text crits you for 9000! <1200 DMG - (2050 DEF + 950 ENGLISH SKILLS)>
-----      You are dead.
-----      ...
-OPTIONS>  RESPAWN : NEW GAME : QUIT
+[i]wall of text crits you for 6056 damage. You are dead.[/i]
