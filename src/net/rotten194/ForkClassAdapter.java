@@ -26,9 +26,7 @@ public class ForkClassAdapter extends ClassAdapter {
 		this.override = override;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.objectweb.asm.ClassAdapter#visitField(int, java.lang.String, java.lang.String, java.lang.String, java.lang.Object)
-	 */
+	
 	@Override
 	public FieldVisitor visitField(int arg0, String arg1, String arg2, String arg3, Object arg4) {
 		ArrayList<CachingFieldAdapter> fields = override.getFields();
@@ -40,9 +38,7 @@ public class ForkClassAdapter extends ClassAdapter {
 		return super.visitField(arg0, arg1, arg2, arg3, arg4);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.objectweb.asm.ClassAdapter#visitMethod(int, java.lang.String, java.lang.String, java.lang.String, java.lang.String[])
-	 */
+	
 	@Override
 	public MethodVisitor visitMethod(int arg0, String arg1, String arg2, String arg3, String[] arg4) {
 		ArrayList<CachingMethodAdapter> methods = override.getMethods();
@@ -57,9 +53,7 @@ public class ForkClassAdapter extends ClassAdapter {
 		return super.visitMethod(arg0, arg1, arg2, arg3, arg4);
 	}
 	
-	/* (non-Javadoc)
-	 * @see org.objectweb.asm.ClassAdapter#visitEnd()
-	 */
+	
 	@Override
 	public void visitEnd() {
 		ArrayList<CachingMethodAdapter> methods = override.getMethods();

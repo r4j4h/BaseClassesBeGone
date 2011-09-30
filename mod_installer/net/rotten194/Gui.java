@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.rotten194;
 
 import java.awt.BorderLayout;
@@ -9,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.MouseInfo;
 
 import static java.awt.GridBagConstraints.*;
 import java.awt.GridBagLayout;
@@ -35,6 +33,8 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JWindow;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -51,12 +51,14 @@ public class Gui {
 	JFrame window = new JFrame();
 	int screen;
 	
-	
 	CardLayout card;
 	JPanel cards;
 	JFileChooser choose;
 	String title;
 	JLabel sure;
+	JTextArea installConsole = new JTextArea("Starting install...");
+	JProgressBar bar;
+	JFrame popup;
 	
 	public Gui(URL fimage, String stitle, String desc, String liscense) throws IOException {
 		this.desc = desc;
@@ -119,21 +121,46 @@ public class Gui {
 				if (!Installer.installDir.isDirectory()){
 					if (screens[2].getComponent(0) instanceof JLabel && ((JLabel)screens[2].getComponent(0)).getIcon() ==  UIManager.getIcon("OptionPane.informationIcon")){
 						screens[2].remove(0);
-						screens[2].add(new JLabel("Please run BCBG at least once to create install targets", UIManager.getIcon("OptionPane.errorIcon"), SwingConstants.CENTER), BorderLayout.PAGE_START);
+						screens[2].add(new JLabel("Please run BCBG at least once to create install targets (no .minecraft" + File.separator + "patches folder)", UIManager.getIcon("OptionPane.errorIcon"), SwingConstants.CENTER), BorderLayout.PAGE_START);
 						screens[2].validate();
 					}
 				}
 				else {
-					sure = new JLabel("Are you sure you want to install " + title + " to " + Installer.installDir.getAbsolutePath() + "?");
-					card.next(cards);
+					JPanel panel = new JPanel(new BorderLayout());
+					panel.add(new JLabel("Are you sure you want to install " + title + " to " + Installer.installDir.getAbsolutePath() + "?"), BorderLayout.PAGE_START);
+					panel.add(createButtonPanel("Yes!", "No...", new ActionListener() {		
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							card.next(cards);
+							Installer.startInstall(new InstallLogger(installConsole, bar), title);
+							popup.setVisible(false);
+							popup.dispose();
+						}
+					}, new ActionListener() {			
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							popup.setVisible(false);
+							popup.dispose();
+						}
+					}));
+					int mouseX = MouseInfo.getPointerInfo().getLocation().x;
+					int mouseY = MouseInfo.getPointerInfo().getLocation().y;
+					popup = new JFrame("Install?");
+					popup.add(panel);
+					popup.setLocation(mouseX - 100, mouseY - 100);
+					popup.pack();
+					popup.setVisible(true);
 				}
 			}
 		}, createFlipper("BACK")), BorderLayout.PAGE_END);
 		
 		screens[3] = new JPanel();
 		screens[3].setLayout(new BorderLayout());
-		JProgressBar bar = new JProgressBar();
-		screens[3].add(bar);
+		installConsole.setEditable(false);
+		installConsole.setLineWrap(true);
+		bar = new JProgressBar();
+		screens[3].add(bar, BorderLayout.PAGE_START);
+		screens[3].add(installConsole);
 		
 		for(int i = 0; i < screens.length; i++){
 			JPanel screen = screens[i];

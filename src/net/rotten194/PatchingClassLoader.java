@@ -36,13 +36,16 @@ import sun.misc.IOUtils;
 
 public class PatchingClassLoader extends URLClassLoader {
 	AccessControlContext acc;
-	private ArrayList<PatchEncloser> patches;
+	//private ArrayList<PatchEncloser> patches;
 	URL jarURL = null;
 	File patchesFolder;
 	File confFolder;
 	File[] stubs;
 	String[] stubClasses;
 	String[] stubClassTargets;
+	File[] otherClasses;
+	String[] otherClassesNames;
+	File[] resources;
 	
 	public PatchingClassLoader(URL[] urls) {
 		super(urls);
@@ -74,22 +77,28 @@ public class PatchingClassLoader extends URLClassLoader {
 		System.out.println("Starting loading of MCP .csvs @ " + System.currentTimeMillis());
 		McpCsvLoader.loadCsvs(confFolder);
 		System.out.println("done " + System.currentTimeMillis());
-		patches = new ArrayList<PatchEncloser>(patchesFolder.listFiles().length);
-		goThroughDirTree(patchesFolder);
-		try {
-			addURL(patchesFolder.toURI().toURL());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		//patches = new ArrayList<PatchEncloser>(patchesFolder.listFiles().length);
+		//goThroughDirTree(patchesFolder);	
+		stubs = getAllStubClasses();
+		stubClassTargets = new String[stubs.length];
+		for (int i = 0; i < stubs.length; i++){
+			stubClassTargets[i] = stubs[i].getName().replace("_Stub.class", "");
+		}
+		stubClasses = new String[stubs.length];
+		for (int i = 0; i < stubs.length; i++){
+			stubClasses[i] = stubs[i].getName().replace(".class", "");
+		}
+		otherClasses = getAllOtherClasses();
+		otherClassesNames = new String[otherClasses.length];
+		for (int i = 0; i < otherClasses.length; i++){
+			otherClassesNames[i] = otherClasses[i].getName().replace(".class", "");
+		}
+		resources = getAllResources();
 	}
 	
 	public void goThroughDirTree(File f){
-		if (f.isFile() && f.getName().endsWith("class")) {
-			PatchEncloser p = generateEnclosingObject(f);
-			if (p != null){
-				patches.add(p);
-			}
+		if (f.isFile()) {
+			//later
 		} 
 		else if (f.isDirectory()){
 			for (File f2 : f.listFiles())
@@ -154,13 +163,11 @@ public class PatchingClassLoader extends URLClassLoader {
 	
 	@Override
 	protected Class<?> findClass(final String name) throws ClassNotFoundException {
-		//System.out.println("finding " + name);
 		return super.findClass(name);
 	}
 	
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		//System.out.println("loading " + name + " (1)");
 		return super.loadClass(name);
 	}
 	
@@ -189,24 +196,25 @@ public class PatchingClassLoader extends URLClassLoader {
 	}
 	
 	@Override
+	public URL getResource(String name) {
+		for (File f : resources){
+			if (f.getPath().replace("\\", "/").endsWith(name)){
+				try {
+					return f.toURI().toURL();
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+					return super.getResource(name);
+				}
+			}
+		}
+		return super.getResource(name);
+	}
+	
+	@Override
 	protected Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		//System.out.println("load " + name);
 		try{
-			if (stubs == null){
-				stubs = getAllStubClasses();
-			}
-			if (stubClassTargets == null){
-				stubClassTargets = new String[stubs.length];
-				for (int i = 0; i < stubs.length; i++){
-					stubClassTargets[i] = stubs[i].getName().replace("_Stub.class", "");
-				}
-			}
-			if (stubClasses == null){
-				stubClasses = new String[stubs.length];
-				for (int i = 0; i < stubs.length; i++){
-					stubClasses[i] = stubs[i].getName().replace(".class", "");
-				}
-			}
+			
 			for (int i = 0; i < stubs.length; i++){
 				String s = stubClassTargets[i];
 				String s2 = stubClasses[i];
@@ -229,6 +237,12 @@ public class PatchingClassLoader extends URLClassLoader {
 					return defineClass(cw.toByteArray());
 				}
 			}
+			for (int i = 0; i < otherClasses.length; i++){
+				String s = otherClassesNames[i];
+				if (name.equals(s)){
+					return defineClass(getByteArrayFromFile(otherClasses[i]));
+				}
+			}
 			return super.loadClass(name, resolve);	
 		} catch (IOException e){
 			e.printStackTrace();
@@ -238,7 +252,7 @@ public class PatchingClassLoader extends URLClassLoader {
 	}
 	
 	private File[] getAllStubClasses(){
-		return patchesFolder.listFiles(new FileFilter() {		
+		FileFilter f = new FileFilter() {		
 			@Override
 			public boolean accept(File f) {
 				System.out.println("filter " + f + "" + (f.isFile() && f.getPath().endsWith("_Stub.class")));
@@ -248,7 +262,67 @@ public class PatchingClassLoader extends URLClassLoader {
 				}
 				return b;
 			}
-		});
+		};
+		ArrayList<File> list = new ArrayList<File>();
+		walkDirTree(patchesFolder, f, list);
+		File[] ret = new File[list.size()];
+		for (int i = 0; i < list.size(); i++){
+			ret[i] = list.get(i);
+		}
+		return ret;
+	}
+	
+	private File[] getAllOtherClasses(){
+		FileFilter f = new FileFilter() {		
+			@Override
+			public boolean accept(File f) {
+				boolean b = f.isFile() && (f.getPath().endsWith(".class") && !(f.getPath().endsWith("_Stub.class") || f.getPath().endsWith("Patch.class")));
+				if (b && f.getParentFile().equals(patchesFolder)){
+					System.err.println("Mod file " + f + " is contained in the top-level patches directory. This is bad practice. Please move it to a subfolder to prevent naming conflicts.");
+				}
+				return b;
+			}
+		};
+		ArrayList<File> list = new ArrayList<File>();
+		walkDirTree(patchesFolder, f, list);
+		File[] ret = new File[list.size()];
+		for (int i = 0; i < list.size(); i++){
+			ret[i] = list.get(i);
+		}
+		return ret;
+	}
+	
+	private File[] getAllResources(){
+		FileFilter f = new FileFilter() {		
+			@Override
+			public boolean accept(File f) {
+				System.out.println("RSRC" + f.getPath());
+				boolean b = f.isFile() && !(f.getPath().endsWith(".class"));
+				if (b && f.getParentFile().equals(patchesFolder)){
+					System.err.println("Mod file " + f + " is contained in the top-level patches directory. This is bad practice. Please move it to a subfolder to prevent naming conflicts.");
+				}
+				return b;
+			}
+		};
+		ArrayList<File> list = new ArrayList<File>();
+		walkDirTree(patchesFolder, f, list);
+		File[] ret = new File[list.size()];
+		for (int i = 0; i < list.size(); i++){
+			ret[i] = list.get(i);
+		}
+		return ret;
+	}
+	
+	private void walkDirTree(File dir, FileFilter filter, ArrayList<File> list){
+		assert dir.isDirectory() && dir.exists();
+		for (File f : dir.listFiles()){
+			if (f.isFile() && filter.accept(f)){
+				list.add(f);
+			}
+			else if (f.isDirectory()){
+				walkDirTree(f, filter, list);
+			}
+		}
 	}
 	
 	/*public byte[] handleStubClasses(byte[] classy, byte[] patch){
