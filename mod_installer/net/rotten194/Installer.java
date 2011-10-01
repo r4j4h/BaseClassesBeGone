@@ -1,11 +1,11 @@
 package net.rotten194;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
@@ -20,11 +20,16 @@ public class Installer {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		new Gui(Installer.class.getResource("banner.png"), getResourceAsString(".title").replace("\n", ""), getResourceAsString(".desc"), getResourceAsString(".lic"));
+		new Gui(Installer.class.getResource("/mod/banner.png"), getResourceAsString("/mod/.title").replace("\n", ""), getResourceAsString("/mod/.desc"), getResourceAsString("/mod/.lic"));
 	}
 	
 	private static String getResourceAsString(String resource) throws IOException{
-		BufferedReader reader = new BufferedReader(new InputStreamReader(Installer.class.getResourceAsStream(resource)));
+		InputStream is = Installer.class.getResourceAsStream(resource);
+		if (is == null){
+			System.err.println(resource + " does not exist!");
+			System.exit(1);
+		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		String line;
 		String all = "";
 		while ((line = reader.readLine()) != null){
@@ -69,7 +74,7 @@ public class Installer {
 			try {
 				logger.setBarString(s);
 				logger.log("copy -> " + s);
-				copy(s, install, logger);
+				copy("/mod/" + s, s, install, logger);
 			} catch (IOException e){
 				logger.logError("Could not copy file " + s + ", " + e);
 			}
@@ -81,30 +86,31 @@ public class Installer {
 	
 	private static ArrayList<String> readIndex() throws IOException {
 		ArrayList<String> files = new ArrayList<String>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(Installer.class.getResourceAsStream("bcbg.index")));
+		InputStream is = Installer.class.getResourceAsStream("/mod/bcbg.index");
+		if (is == null){
+			System.err.println("bcbg.index does not exist!!");
+			System.exit(1);
+		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		String line;
 		while ((line = reader.readLine()) != null){
-			files.add(line);
+			files.add(line.replace("\n", ""));
 		}
 		return files;
 	}
 	
-	private static void copy(String resource, File destination, InstallLogger logger) throws IOException{
-		File copyTo = new File(destination, resource);
-		copyTo.createNewFile();
-		BufferedInputStream buf = new BufferedInputStream(Installer.class.getResourceAsStream(resource));
-		int i;
-		FileWriter writer = new FileWriter(copyTo);
-		int length = 0;
-		while ((i = buf.read()) != -1){
-			writer.write(i);
-			length++;
+	private static void copy(String resource, String create, File destination, InstallLogger logger) throws IOException{
+		File copyTo = new File(destination, create);
+		InputStream is = Installer.class.getResourceAsStream(resource);	
+		if (is == null){
+			logger.logError(resource + " does not exist");
+			return;
 		}
-		writer.close();
+		long length = Files.copy(is, copyTo.toPath());
 		logger.log("	Copied " + getSizeString(length));
 	}
 	
-	private static String getSizeString(int size){
+	private static String getSizeString(long size){
 		if (size < 1024){
 			return size + " byte(s)";
 		}
