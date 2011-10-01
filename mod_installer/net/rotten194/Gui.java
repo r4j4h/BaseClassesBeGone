@@ -99,7 +99,7 @@ public class Gui {
 		screens[1].setLayout(new BorderLayout());
 		JLabel label = new JLabel("TERMS AND CONDITIONS:");
 		label.setFont(new Font(Font.DIALOG, Font.BOLD, 24));
-		JTextArea text2 = new JTextArea(liscense);
+		JTextArea text2 = new JTextArea(liscense + "\n\nBCBG and this installer created by Rotten194 et al, not the mod author. \nThis is simply a repacking of the BCBG mod installer. \nDo not contact the mod author with installer issues, report them on the BCBG thread.");
 		text2.setEditable(false);
 		text2.setLineWrap(true);
 		JScrollPane scroll2 = new JScrollPane(text2);

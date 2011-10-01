@@ -55,12 +55,12 @@ public class Installer {
 		modName = str.toString();
 		String dirName = modName;
 		File install = new File(installDir, dirName);
-		if (install.exists()){
+		while (install.exists()){
 			dirName += "_";
 			install = new File(installDir, dirName);
 		}
 		if (!dirName.equals(modName)){
-			logger.logError("You may have an old version of this mod installed, you should remove it. The mod will still be installed with a different name.");
+			logger.logError("You may have an old version of this mod installed, you should remove it (folder " + modName + " already exists). The mod will still be installed, but to " + dirName);
 		}
 		install.mkdir();
 		for (String s : files){
@@ -68,7 +68,8 @@ public class Installer {
 			file++;
 			try {
 				logger.setBarString(s);
-				copy(s, install);
+				logger.log("copy -> " + s);
+				copy(s, install, logger);
 			} catch (IOException e){
 				logger.logError("Could not copy file " + s + ", " + e);
 			}
@@ -88,16 +89,35 @@ public class Installer {
 		return files;
 	}
 	
-	private static void copy(String resource, File destination) throws IOException{
+	private static void copy(String resource, File destination, InstallLogger logger) throws IOException{
 		File copyTo = new File(destination, resource);
 		copyTo.createNewFile();
 		BufferedInputStream buf = new BufferedInputStream(Installer.class.getResourceAsStream(resource));
 		int i;
 		FileWriter writer = new FileWriter(copyTo);
+		int length = 0;
 		while ((i = buf.read()) != -1){
 			writer.write(i);
+			length++;
 		}
 		writer.close();
+		logger.log("	Copied " + getSizeString(length));
+	}
+	
+	private static String getSizeString(int size){
+		if (size < 1024){
+			return size + " byte(s)";
+		}
+		else if (size < 1024 * 1024){
+			return size/1024 + " kilobyte(s)";
+		}
+		else if (size < 1024 * 1024 * 1024){
+			return size/(1024*1024) + " megabyte(s)";
+		}
+		else if (size < 1024 * 1024 * 1024 * 1024){
+			return size/(1024*1024*1024) + " gigabyte(s)";
+		}
+		return (size/1024 * 1024 * 1024 * 1024 * 1024) + " terrabyte(s). Seriously, this file worries me somewhat. Why are you installing a mod > 1 terrabyte? Reevaluate your life.";
 	}
 	
 	public static File getDefaultDirectory(String applicationName) {
