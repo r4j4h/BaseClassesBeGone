@@ -1,0 +1,32 @@
+Creating an installer for your BCBG mod:
+
+Creating an installer is very easy.
+
+1. Download the source and build the installer.
+2. Open the built installer .jar with 7zip.
+3. Drop all your mod classes and resources in the .jar
+4. Create five files:
+    .title - contains 1 line, the title of your mod (used for the window and with special characters changed to underscores for the folder name)
+        example:
+            $ cat .title
+            TEST MOD
+        The title bar of your installer would be BCBG Installer: TEST MOD, and the folder your mod would be installed to would be /patches/TEST_MOD
+    .desc - shown in the description tab
+        example: it's just a bunch of text...
+    banner.png - also shown in the decription tab
+        example: hard to show in a txt file, but it's basically just a .png. The window will resize to fit it but keep in mind ungodly huge banners will look ugly.
+        Suggestion: use the support signature as a banner
+    .lic - shown in the liscense tab
+        example: it's just text. You're free to choose your own license. However, a disclaimer will be added to the end of your license by me.
+            BCBG and this installer created by Rotten194 et al, not the mod author. 
+            This is simply a repacking of the BCBG mod installer. 
+            Do not contact the mod author with installer issues, report them on the BCBG thread.
+    bcbg.index - an index of all your mod files (DO NOT INCLUDE THE PREVIOUSLY LISTED BCBG METADATA FILES). List every class and resource, with extension, one per line.
+        example:
+            $ cat bcbg.index
+            banner.png
+            bar.txt
+            foo.txt
+            InstallLogger.class
+6. Drop them all in the .jar as well
+7. Run the installer via command line to make sure it doesn't spit out any errors. Check your /patches to make sure it installed to .minecraft correctly. Upload and distribute!

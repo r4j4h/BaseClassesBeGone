@@ -82,7 +82,10 @@ Say you have a static field that does calculations in it's init (eg public stati
 
 Try and namespace any methods you add so they don't conflict with people adding methods of the same name. Instead of getPlayer try <yourname>GetPlayer or something.
 
-DO AS MUCH AS POSSIBLE OUTSIDE OF BASE CLASSES.
+DO AS MUCH AS POSSIBLE OUTSIDE OF BASE CLASSES. 
+
+You can call added methods/refer to added fields by callling them in your _Stub class. BCBG will resolve them to calls to the obfuscated class post-patch.
+eg GuiMainMenu_Stub.myMethod() -> sf.myMethod()
 
 You can add other classes by simply putting them in your mod's folder. Same with images. You can also override .jar resources (e.g. title/mclogo.png) by putting them in THE SAME FILE STRUCTURE. Your mod's folder == minecraft.jar. For replacing resources to work they have to be the path relative to that "root". For instance, to replace mclogo.png create a folder called title in your mod's folder, then put a .png called mclogo.png inside that.
 e.g. If you need a new class called Zoo for a new method in a base class, just create that class and moe it in with the _Stub class. BCBG will load it fine.
