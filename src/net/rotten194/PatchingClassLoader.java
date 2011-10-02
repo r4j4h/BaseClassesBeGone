@@ -12,6 +12,8 @@ import java.net.SocketPermission;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.AccessControlContext;
 import java.security.AccessController;
 import java.security.CodeSource;
@@ -70,6 +72,10 @@ public class PatchingClassLoader extends URLClassLoader {
 		confFolder = new File(Util.getWorkingDirectory(), ".bcbg_conf");
 		if (!confFolder.exists()){
 			confFolder.mkdir();
+			copyCsv("classes.csv", confFolder);
+			copyCsv("methods.csv", confFolder);
+			copyCsv("fields.csv", confFolder);
+			System.out.println("Added MCP csv files, courtesy of Searge and the other contributors to the excellent Minecraft Coder Pack. Cheers!");
 		}
 		else if (confFolder.isFile()){
 			throw new RuntimeException("please remove file " + confFolder);
@@ -94,6 +100,19 @@ public class PatchingClassLoader extends URLClassLoader {
 			otherClassesNames[i] = otherClasses[i].getName().replace(".class", "");
 		}
 		resources = getAllResources();
+	}
+	
+	private void copyCsv(String name, File to){
+		Path p = to.toPath();
+		try {
+			Files.copy(getClass().getResourceAsStream(name), p);
+		} catch (IOException e){
+			System.err.println("Could not copy " + name + " from .jar to " + to.getAbsolutePath());
+			e.printStackTrace();
+		} catch (NullPointerException e){
+			System.err.println("Could not copy " + name + " from .jar to " + to.getAbsolutePath() + "(" + name + " does not exist)");
+			e.printStackTrace();
+		}
 	}
 	
 	public void goThroughDirTree(File f){
