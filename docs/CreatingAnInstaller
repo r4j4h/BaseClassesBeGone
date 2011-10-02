@@ -4,8 +4,9 @@ Creating an installer is very easy.
 
 1. Download the source and build the installer.
 2. Open the built installer .jar with 7zip.
-3. Drop all your mod classes and resources in the .jar
-4. Create five files:
+3. Create a folder outside the .jar called mod
+4. Put all your mod files in /mod
+5. Create five files:
     .title - contains 1 line, the title of your mod (used for the window and with special characters changed to underscores for the folder name)
         example:
             $ cat .title
@@ -28,5 +29,6 @@ Creating an installer is very easy.
             bar.txt
             foo.txt
             InstallLogger.class
-6. Drop them all in the .jar as well
-7. Run the installer via command line to make sure it doesn't spit out any errors. Check your /patches to make sure it installed to .minecraft correctly. Upload and distribute!
+6. Drop them all in the mod folder as well
+7. Drag your /mod folder into the root of the.jar (with META-INF and net -- DO NOT DELETE ANYTHING)
+8. Run the installer via command line to make sure it doesn't spit out any errors. Check your /patches to make sure it installed to .minecraft correctly. Upload and distribute!
