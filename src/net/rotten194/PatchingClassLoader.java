@@ -103,7 +103,7 @@ public class PatchingClassLoader extends URLClassLoader {
 	}
 	
 	private void copyCsv(String name, File to){
-		Path p = to.toPath();
+		Path p = new File(to, name).toPath();
 		try {
 			Files.copy(getClass().getResourceAsStream(name), p);
 		} catch (IOException e){
